@@ -6,7 +6,7 @@ func TestStackPush(t *testing.T) {
 	stackSize := 5
 	s := newStack(stackSize)
 	for i := 0; i < stackSize+1; i++ {
-		err := s.push(i)
+		err := s.push(Cell(i))
 		if err != nil {
 			if err != ErrStackOverflow {
 				t.Error("illegal error:", err)
@@ -17,7 +17,7 @@ func TestStackPush(t *testing.T) {
 
 func TestStackPop(t *testing.T) {
 	s := newStack(5)
-	expected := 8
+	expected := Cell(8)
 	s.push(expected)
 	actual, err := s.pop()
 	if err != nil {

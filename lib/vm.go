@@ -1,52 +1,68 @@
 package ngaro
 
+type Cell int
+
 const (
-	Nop = iota
-	Lit
-	Dup
-	Drop
-	Swap
-	Push
-	Pop
-	Loop
-	Jump
-	Return
-	GtJump
-	LtJump
-	NeJump
-	EqJump
-	Fetch
-	Store
-	Add
-	Substract
-	Multiply
-	DivMod
-	And
-	Or
-	Xor
-	Shl
-	Shr
-	ZeroExit
-	Inc
-	Dec
-	In
-	Out
-	Wait
+	OpNop Cell = iota
+	OpLit
+	OpDup
+	OpDrop
+	OpSwap
+	OpPush
+	OpPop
+	OpLoop
+	OpJump
+	OpReturn
+	OpGtJump
+	OpLtJump
+	OpNeJump
+	OpEqJump
+	OpFetch
+	OpStore
+	OpAdd
+	OpSubstract
+	OpMultiply
+	OpDivMod
+	OpAnd
+	OpOr
+	OpXor
+	OpShl
+	OpShr
+	OpZeroExit
+	OpInc
+	OpDec
+	OpIn
+	OpOut
+	OpWait
 
 	dstackSize = 128
-	astackSize = 1024
+	rstackSize = 1024
+	msize      = 1048576
 )
 
 // ngaro virtual machine
 type VM struct {
-	ports  []int
-	memory []int
-	dstack [dstackSize]int
-	astack [astackSize]int
+	ports  []Cell
+	memory []Cell
+	msize  int // memory size
+	ip     int // instruction pointer
+	dstack *stack
+	rstack *stack
+}
+
+func (vm *VM) wait() {
+
 }
 
 func NewVM() *VM {
-	return &VM{}
+	return &VM{
+		ports:  make([]Cell, 16),
+		memory: make([]Cell, msize),
+		msize:  msize,
+		ip:     0,
+		dstack: newStack(dstackSize),
+		rstack: newStack(rstackSize),
+	}
 }
 
 func (vm *VM) Run() {

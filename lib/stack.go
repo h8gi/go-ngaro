@@ -3,7 +3,8 @@ package ngaro
 import "fmt"
 
 type stack struct {
-	data    []int
+	data    []Cell
+	size    int
 	pointer int
 }
 
@@ -14,17 +15,18 @@ var (
 
 func newStack(size int) *stack {
 	return &stack{
-		data:    make([]int, size),
+		data:    make([]Cell, size),
+		size:    size,
 		pointer: 0,
 	}
 }
 
-func (s *stack) top() int {
+func (s *stack) top() Cell {
 	return s.data[s.pointer]
 }
 
-func (s *stack) push(elem int) error {
-	if s.pointer >= len(s.data) {
+func (s *stack) push(elem Cell) error {
+	if s.pointer >= s.size {
 		return ErrStackOverflow
 	}
 	s.data[s.pointer] = elem
@@ -32,7 +34,7 @@ func (s *stack) push(elem int) error {
 	return nil
 }
 
-func (s *stack) pop() (int, error) {
+func (s *stack) pop() (Cell, error) {
 	if s.pointer <= 0 {
 		return 0, ErrStackUnderflow
 	}
